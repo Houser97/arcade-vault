@@ -8,13 +8,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Arcade Vault — a platform for playing games online and competing for high scores (per README.md, in Spanish). The repo is currently a fresh `create-next-app` scaffold (Next.js 16, React 19, TypeScript, Tailwind v4); no game code has been written yet, so `app/` still contains the default template files.
 
-## Commands
-
-- `npm run dev` — start the dev server
-- `npm run build` — production build
-- `npm run start` — run the production build
-- `npm run lint` — ESLint (flat config via `eslint-config-next`, core-web-vitals + typescript rules)
-
 There is no test runner configured in this repo.
 
 ## Architecture
@@ -24,6 +17,9 @@ There is no test runner configured in this repo.
 - **Tailwind v4**: configured CSS-first in `app/globals.css` via `@import "tailwindcss"` and `@theme inline` — there is no `tailwind.config.*` file.
 - **TypeScript**: `strict` mode is on.
 - Since this Next.js version may differ from familiar APIs/conventions, consult `node_modules/next/dist/docs/` before implementing anything App Router-related (see AGENTS.md).
+
+## Skills
+Always use /frontend-design when working on UI.
 
 ## Spec-driven workflow
 

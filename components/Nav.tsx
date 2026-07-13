@@ -6,8 +6,8 @@ import { useState } from "react";
 import { useSession } from "@/lib/useSession";
 
 const LINKS = [
-  { href: "/", label: "LIBRARY", match: (p: string) => p === "/" || p.startsWith("/games") },
-  { href: "/leaderboard", label: "HALL OF FAME", match: (p: string) => p.startsWith("/leaderboard") },
+  { href: "/", label: "Library", match: (p: string) => p === "/" || p.startsWith("/games") },
+  { href: "/leaderboard", label: "Hall of Fame", match: (p: string) => p.startsWith("/leaderboard") },
 ];
 
 export default function Nav() {
@@ -44,7 +44,7 @@ export default function Nav() {
           </button>
         ) : (
           <Link href="/login" className="btn auth-btn">
-            SIGN IN
+            Sign In
           </Link>
         )}
         <button className="btn ghost hamburger" onClick={() => setOpen(true)} aria-label="Menu">
@@ -68,7 +68,7 @@ export default function Nav() {
           </Link>
         ))}
         <Link href="/login" className={pathname === "/login" ? "active" : ""} onClick={close}>
-          {session ? "ACCOUNT" : "SIGN IN"}
+          {session ? "Account" : "Sign In"}
         </Link>
         <div style={{ flex: 1 }} />
         <div className="pixel" style={{ fontSize: 9, color: "var(--ink-faint)", letterSpacing: "0.16em" }}>
