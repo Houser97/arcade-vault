@@ -1,0 +1,122 @@
+"use client";
+
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import { GAMES, seededScores } from "@/lib/games";
+import { useSession } from "@/lib/useSession";
+
+export default function LeaderboardPage() {
+  const [tab, setTab] = useState(GAMES[0].id);
+  const { session } = useSession();
+
+  const rows = useMemo(() => seededScores(tab.length * 23 + 7, 12), [tab]);
+  const game = GAMES.find((g) => g.id === tab)!;
+  const youRank = session ? Math.floor(8 + (tab.length % 4)) : null;
+  const youScore = session ? (rows[5]?.score ?? 0) - 2400 : null;
+
+  return (
+    <div className="av-hall fade-in">
+      <div className="hall-head">
+        <h1>HALL OF FAME</h1>
+        <p className="pixel" style={{ fontSize: 10 }}>
+          THE NAMES THAT NEVER FADE FROM THE SCREEN
+        </p>
+      </div>
+
+      <div className="hall-tabs">
+        {GAMES.map((g) => (
+          <button
+            key={g.id}
+            className={`chip${tab === g.id ? " active" : ""}`}
+            onClick={() => setTab(g.id)}
+          >
+            {g.title}
+          </button>
+        ))}
+      </div>
+
+      <div className="podium">
+        <div className="podium-slot silver">
+          <div className="rank-num">02</div>
+          <div className="name">{rows[1].name}</div>
+          <div className="score">{rows[1].score.toLocaleString("en-US")}</div>
+          <div className="date">{rows[1].date}</div>
+        </div>
+        <div className="podium-slot gold">
+          <div className="pixel" style={{ fontSize: 9, color: "var(--gold)", letterSpacing: "0.18em" }}>
+            CHAMPION
+          </div>
+          <div className="rank-num" style={{ fontSize: 36, marginTop: 4 }}>
+            01
+          </div>
+          <div className="name">{rows[0].name}</div>
+          <div className="score" style={{ fontSize: 20 }}>
+            {rows[0].score.toLocaleString("en-US")}
+          </div>
+          <div className="date">{rows[0].date}</div>
+        </div>
+        <div className="podium-slot bronze">
+          <div className="rank-num">03</div>
+          <div className="name">{rows[2].name}</div>
+          <div className="score">{rows[2].score.toLocaleString("en-US")}</div>
+          <div className="date">{rows[2].date}</div>
+        </div>
+      </div>
+
+      <div className="hall-table">
+        <div className="th">
+          <div>RANK</div>
+          <div>PLAYER</div>
+          <div>SCORE</div>
+          <div>DATE</div>
+        </div>
+        {rows.map((r, i) => {
+          const getTopClass = (index: number): string => {
+            if (index === 0) return " top1";
+            if (index === 1) return " top2";
+            if (index === 2) return " top3";
+            return "";
+          };
+          const topClass = getTopClass(i);
+          return (
+          <div
+            key={r.name + i}
+            className={`tr${topClass}`}
+            style={{ animationDelay: `${i * 50}ms` }}
+          >
+            <div className="rk">#{String(r.rank).padStart(2, "0")}</div>
+            <div className="pl">{r.name}</div>
+            <div className="sc">{r.score.toLocaleString("en-US")}</div>
+            <div className="dt">{r.date}</div>
+          </div>
+        )})}
+        {session && (
+          <>
+            <div className="tr you-label">▸ YOUR BEST SCORE IN {game.title}</div>
+            <div className="tr you" style={{ animationDelay: `${rows.length * 50 + 50}ms` }}>
+              <div className="rk" style={{ color: "var(--yellow)" }}>
+                #{String(youRank).padStart(2, "0")}
+              </div>
+              <div className="pl" style={{ color: "var(--yellow)" }}>
+                {session.name}
+              </div>
+              <div
+                className="sc"
+                style={{ color: "var(--yellow)", textShadow: "0 0 6px rgba(245,255,0,0.5)" }}
+              >
+                {(youScore || 9999).toLocaleString("en-US")}
+              </div>
+              <div className="dt">11/05/2026</div>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div style={{ textAlign: "center", marginTop: 32 }}>
+        <Link href="/" className="btn lg">
+          BACK TO THE LIBRARY
+        </Link>
+      </div>
+    </div>
+  );
+}
